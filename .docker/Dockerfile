@@ -1,19 +1,18 @@
 # Pull base image.
-FROM phusion/baseimage:0.10.1
-MAINTAINER Anmol Nagpal <anmol@clouddrove.com>
+FROM phusion/baseimage:jammy-1.0.4
 
 #####################################
 ENV LANG C.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ###
-ENV PHP_VERSION 7.3
-ENV PACKER_VERSION 1.4.2
-ENV TERRAFORM_VERSION 0.12.6
-ENV ANSIBLE_VERSION 2.8.3
+ENV PHP_VERSION 8.3.10
+ENV PACKER_VERSION 1.11.2
+ENV TERRAFORM_VERSION 1.9.0
+ENV ANSIBLE_VERSION 10.3.0
 ENV LINT_VERSION 4.1.0
-ENV KUBECTL_VERSION 1.15.0
-ENV HELM_VERSION 2.14.3
+ENV KUBECTL_VERSION 1.31.0
+ENV HELM_VERSION 3.15.1
 ENV DEBIAN_FRONTEND noninteractive
 ####################################
 
@@ -45,9 +44,9 @@ RUN groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | 
 RUN add-apt-repository ppa:longsleep/golang-backports
 
 #General
-RUN apt-get remove -y python3
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y      \
+RUN apt remove -y python3
+RUN apt update && apt upgrade -y
+RUN apt install -y      \
 	curl                   \
 	git                    \
 	zip                    \
@@ -59,7 +58,6 @@ RUN apt-get install -y      \
 	figlet                 \
 	sysvbanner             \
 	htop                   \
-	python-pip             \
 	python3-pip            \
 	wget                   \
 	ca-certificates        \
@@ -101,7 +99,7 @@ RUN cd /tmp && \
 #Packer
 RUN cd /tmp && \
     wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip && \
-    unzip packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/bin
+    unzip -o -qq packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/bin
 
 #Kubectl
 RUN cd /usr/bin && \
@@ -112,11 +110,10 @@ RUN cd /usr/bin && \
 RUN cd /tmp && \
     wget https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz && \
     tar -zxvf helm-v${HELM_VERSION}-linux-amd64.tar.gz && \
-    mv linux-amd64/helm /usr/bin/ && \
-    mv linux-amd64/tiller /usr/bin/
+    mv linux-amd64/helm /usr/bin/ 
 
 # Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/ /var/cache/apk/**
+RUN apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/ /var/cache/apk/**
 WORKDIR /home/ubuntu/workspace
 
 # Define default command.
