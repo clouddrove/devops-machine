@@ -21,6 +21,7 @@ services:
       - ~/.aws:/home/ubuntu/.aws
       - ~/.zsh_history:/home/ubuntu/.zsh_history
       - ~/.gitconfig:/home/ubuntu/.gitconfig
+      - ~/.kube:/home/ubuntu/.kube
     networks:
       dev_net_devops:
         ipv4_address: 10.13.0.13
@@ -32,5 +33,3 @@ networks:
      config:
        - subnet: 10.13.0.0/16
          gateway: 10.13.0.1
-
-
