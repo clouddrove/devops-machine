@@ -1,0 +1,42 @@
+name: Build and Test
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ~/devops-machine
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build the application image
+        run: docker build -t clouddrove/devops:0.0.${{ github.run_number }} ./docker-image/.
+
+      - name: Bring container up and running
+        run: docker run --name devops -d clouddrove/devops:0.0.${{ github.run_number }}
+
+      - name: Wait for container to boot up
+        run: sleep 10
+
+      - name: Sanity check
+        run: |
+          # Get the latest versions
+          LATEST_TERRAFORM_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)
+
+          # Get the installed versions
+          INSTALLED_TERRAFORM_VERSION=$(docker exec devops terraform version -json | jq -r .terraform_version)
+
+          # Compare versions
+
+          if [ "$LATEST_TERRAFORM_VERSION" != "$INSTALLED_TERRAFORM_VERSION" ]; then
+            echo "Terraform version mismatch: expected $LATEST_TERRAFORM_VERSION, got $INSTALLED_TERRAFORM_VERSION"
+            exit 1
+          fi
