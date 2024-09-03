@@ -1,4 +1,4 @@
-name: Build and Test
+name: Sanity_Checks
 
 on:
   pull_request:
@@ -6,9 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ~/devops-machine
 
     steps:
       - name: Checkout code
