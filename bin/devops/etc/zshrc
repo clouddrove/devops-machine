@@ -43,7 +43,7 @@ SAVEHIST=1000 # saved history
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-plugins=(git cp git-extras gnu-utils history pip python ruby screen composer aws npm node common-aliases cp copyfile copydir github sudo ubuntu history-substring-search)
+plugins=(git cp git-extras gnu-utils history pip python ruby screen composer aws npm node common-aliases cp copyfile copypath github sudo ubuntu history-substring-search)
 
 typeset -g -A key
 
