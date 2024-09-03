@@ -14,8 +14,7 @@ jobs:
       id-token: 'write'
     env:
       DOCKER_IMAGE: devops-machine
-      REPO: ${{ github.repository }}
-      DOCKER_TAG: ghcr.io/${{ env.REPO }}:${{ github.ref_name }}
+      DOCKER_TAG: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
       # DOCKER_TAG: ghcr.io/clouddrove/devops-machine:v2
       PROVIDER: github
     
