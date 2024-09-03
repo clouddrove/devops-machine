@@ -15,16 +15,8 @@ on:
 
 jobs:
   docker-scanner:
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Change directory to ./.docker and run docker-scanner
-        run: |
-          cd ./.docker
-          dockerfile-path="Dockerfile"
-        uses: clouddrove/github-shared-workflows/.github/workflows/docker-scanner.yml@1.2.7
-        with:
-          severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
-          dockerfile-path: "./Dockerfile"
-          security-upload: "true"
+    uses: clouddrove/github-shared-workflows/.github/workflows/docker-scanner.yml@1.2.7
+    with:
+      severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+      dockerfile-path: "./.docker/."
+      security-upload: "true"
