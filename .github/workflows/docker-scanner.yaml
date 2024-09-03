@@ -14,5 +14,8 @@ jobs:
     uses: clouddrove/github-shared-workflows/.github/workflows/docker-scanner.yml@1.2.7
     with:
       severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
-      dockerfile-path: "./.docker/Dockerfile"
+      dockerfile-path: "Dockerfile"
       security-upload: "true"
+    defaults:
+      run:
+        working-directory: ./.docker
