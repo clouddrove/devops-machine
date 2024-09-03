@@ -1,0 +1,120 @@
+name: Enigma Docker Build and Publish.
+
+on:
+  push:
+    branches:
+      - feat/enigma
+  workflow_dispatch:
+
+jobs:
+  docker-build-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      DOCKER_IMAGE: devops-machine
+      DOCKER_TAG: ghcr.io/clouddrove/devops-machine:v1
+      # AWS_REGION: us-east-1
+      # AWS_ACCOUNT_ID: '924144197303'
+      # PROVIDER: aws
+      # PROVIDER: dockerhub
+      # PROVIDER: gcp
+      # GCP_PROJECT_ID: virtual-voyage-423511-d7
+      # GCP_REGION: us-central1
+      PROVIDER: github
+      # PROVIDER: azure
+      # AZURE_REGISTRY_NAME: tempacr001
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.7
+
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v3
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_GITHUB_OIDC_ROLE }}
+      #     aws-region: ${{ env.AWS_REGION }}
+
+      # - name: Login to GitHub Container Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.TOKEN }}
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # - name: Authenticate with Google Cloud
+      #   uses: google-github-actions/auth@v2.1.5
+      #   with:
+      #     token_format: access_token
+      #     workload_identity_provider: ${{ secrets.WIP }}
+      #     service_account: ${{ secrets.SERVICE_ACCOUNT }}
+      #     access_token_lifetime: 300s
+      #     project_id: ${{ env.GCP_PROJECT_ID }}
+
+      # - name: 'Log into Azure using github secret AZURE_CREDENTIALS'
+      #   uses: Azure/login@v2
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+      #     enable-AzPSSession: true
+         
+      - name: Build Docker Image
+        uses: clouddrove/enigma@feat/Dockerfile_path 
+        with:
+          command: bake
+          DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          # GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
+          # GCP_REGION:  ${{ env.GCP_REGION }}
+          # AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}
+          # AWS_REGION: ${{ env.AWS_REGION }}
+          # DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          # DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERFILE_PATH: .docker/Dockerfile
+          GITHUB_USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB }}
+          # AZURE_REGISTRY_NAME: ${{ env.AZURE_REGISTRY_NAME }}
+          # AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          # AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          # AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          
+      # - name: Analyze for critical and high CVEs
+      #   id: docker-scout-cves
+      #   uses: docker/scout-action@v1
+      #   with:
+      #     command: cves
+      #     image: ${{ env.DOCKER_TAG }}
+      #     sarif-file: sarif.output.json
+      #     summary: true
+          
+      - name: Publish Docker Image
+        uses: clouddrove/enigma@feat/Dockerfile_path 
+        with:
+          command: publish
+          DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          # GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
+          # GCP_REGION:  ${{ env.GCP_REGION }}
+          # DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          # DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERFILE_PATH: .docker/Dockerfile
+          # AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}
+          # AWS_REGION: ${{ env.AWS_REGION }}
+          GITHUB_USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB }}
+          # AZURE_REGISTRY_NAME: ${{ env.AZURE_REGISTRY_NAME }}
+          # AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          # AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          # AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+   
+      # - name: Upload SARIF result
+      #   id: upload-sarif
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: sarif.output.json
