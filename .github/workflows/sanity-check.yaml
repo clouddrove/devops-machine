@@ -65,6 +65,18 @@ jobs:
             mismatches="$mismatches\nHelm version mismatch: expected $LATEST_HELM_VERSION, got $INSTALLED_HELM_VERSION"
           fi
 
+          # Google Cloud SDK (gcloud)
+          curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
+          tar -xf google-cloud-cli-linux-x86_64.tar.gz
+          ./google-cloud-sdk/install.sh --quiet
+          export PATH=$PATH:$PWD/google-cloud-sdk/bin
+          LATEST_GCLOUD_VERSION=$(gcloud --version | grep -oP '(?<=Google Cloud SDK )\S+')
+          INSTALLED_GCLOUD_VERSION=$(docker exec devops gcloud --version | grep -oP '(?<=Google Cloud SDK )\S+')
+          echo "Google Cloud SDK versions - Latest: $LATEST_GCLOUD_VERSION, Installed: $INSTALLED_GCLOUD_VERSION"
+          if [ "$LATEST_GCLOUD_VERSION" != "$INSTALLED_GCLOUD_VERSION" ]; then
+            mismatches="$mismatches\nGoogle Cloud SDK version mismatch: expected $LATEST_GCLOUD_VERSION, got $INSTALLED_GCLOUD_VERSION"
+          fi
+
           # Print mismatches and fail if any
           if [ -n "$mismatches" ]; then
             echo -e "Version mismatches found:$mismatches"
