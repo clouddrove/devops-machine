@@ -65,23 +65,19 @@ This repository offers a comprehensive Docker-based environment configured with 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/clouddrove-sandbox/devops-machine.git
-   cd devops-machine
-
-
+   git clone https://github.com/clouddrove/devops-machine.git
+   cd devops-machin
 ## 🛠 Build A Docker Image
 
 1. Copy and paste this command (Dockerfile is located in .docker directory):
    ```bash
-   docker build -t devops-machine .docker/  
-
+   docker build -t your-image-name -f .docker/Dockerfile .
 ## 🔧 Running the DevOps Machine
 
 1. To start the DevOps machine, use the following command:
 
    ```bash
    make up  
-
 2. To access the DevOps Machine Run this command:
 
  - Login with user: ubuntu
@@ -89,7 +85,6 @@ This repository offers a comprehensive Docker-based environment configured with 
 
    ```bash
    make ssh  
-
 ## ✨ Contributors
 
 Big thanks to our contributors for elevating our project with their dedication and expertise! But, we do not wish to stop there, would like to invite contributions from the community in improving these projects and making them more versatile for better reach. Remember, every bit of contribution is immensely valuable, as, together, we are moving in only 1 direction, i.e. forward. 
