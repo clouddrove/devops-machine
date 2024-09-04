@@ -20,3 +20,4 @@ jobs:
       severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
       dockerfile-path: "./.docker/Dockerfile"
       security-upload: "true"
+      block_action: "true"

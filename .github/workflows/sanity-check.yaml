@@ -1,4 +1,4 @@
-name: Sanity_Checks
+name: Sanity Checks
 
 on:
   pull_request:

@@ -7,20 +7,20 @@ ENV LC_ALL en_US.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
 ###
-ENV PHP_VERSION 8.3.10
-ENV PACKER_VERSION 1.11.2
-ENV TERRAFORM_VERSION 1.9.0
-ENV ANSIBLE_VERSION 10.3.0
-ENV LINT_VERSION 4.1.0
-ENV KUBECTL_VERSION 1.31.0
-ENV HELM_VERSION 3.15.1
-ENV AZURE_CLI_VERSION 2.63.0-1~jammy
-ENV AWS_CLI_VERSION 2.17.33
-ENV K9s_Version 0.32.5
-ENV GCLOUD_VERSION 489.0.0
-ENV KUI_Version 13.1.4
-ENV KUBECTX_VERSION 0.9.4
-ENV KUBENS_VERSION 0.9.4
+ENV PHP_VERSION=8.3.10
+ENV PACKER_VERSION=1.11.2
+ENV TERRAFORM_VERSION=1.9.5
+ENV ANSIBLE_VERSION=10.3.0
+ENV LINT_VERSION=4.1.0
+ENV KUBECTL_VERSION=1.31.0
+ENV HELM_VERSION=3.15.1
+ENV AZURE_CLI_VERSION=2.63.0-1~jammy
+ENV AWS_CLI_VERSION=2.17.33
+ENV K9s_Version=0.32.5
+ENV GCLOUD_VERSION=490.0.0
+ENV KUI_Version=13.1.4
+ENV KUBECTX_VERSION=0.9.4
+ENV KUBENS_VERSION=0.9.4
 
 ####################################
 
@@ -38,8 +38,8 @@ RUN mkdir -p /home/ubuntu/.ssh
 RUN chmod 755 /home/ubuntu/.ssh
 RUN chown -R ubuntu:ubuntu /home/ubuntu
 RUN chmod 755 /home/ubuntu
-ENV BOOT2DOCKER_ID 501
-ENV BOOT2DOCKER_GID 20
+ENV BOOT2DOCKER_ID=501
+ENV BOOT2DOCKER_GID=20
 # Tweaks to give write permissions to the app
 RUN usermod -u ${BOOT2DOCKER_ID} ubuntu && \
     usermod -G staff ubuntu
@@ -84,8 +84,6 @@ RUN chmod +x /home/ubuntu/install-zsh.sh
 RUN sh /root/install-zsh.sh
 RUN su - ubuntu -c "sh /home/ubuntu/install-zsh.sh"
 RUN rm /root/.zshrc && chsh -s `which zsh` && chsh -s `which zsh` ubuntu && chmod -R 755 /usr/local/share/zsh*
-RUN mkdir -p ~/.oh-my-zsh/custom/plugins/copydir
-RUN curl -L https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/copypath/copypath.plugin.zsh -o ~/.oh-my-zsh/custom/plugins/copydir/copydir.plugin.zsh
 
 ##Python with Packages
 RUN pip install ansible==${ANSIBLE_VERSION} \
