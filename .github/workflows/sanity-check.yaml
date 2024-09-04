@@ -25,15 +25,42 @@ jobs:
 
       - name: Sanity check
         run: |
-          # Get the latest versions
+          # Terraform
           LATEST_TERRAFORM_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)
-
-          # Get the installed versions
           INSTALLED_TERRAFORM_VERSION=$(docker exec devops terraform version -json | jq -r .terraform_version)
-
-          # Compare versions
-
           if [ "$LATEST_TERRAFORM_VERSION" != "$INSTALLED_TERRAFORM_VERSION" ]; then
             echo "Terraform version mismatch: expected $LATEST_TERRAFORM_VERSION, got $INSTALLED_TERRAFORM_VERSION"
+            exit 1
+          fi
+          
+          # Azure CLI
+          LATEST_AZURE_VERSION=$(curl -s https://api.github.com/repos/Azure/azure-cli/releases/latest | jq -r .tag_name | cut -d '-' -f 3)
+          INSTALLED_AZURE_VERSION=$(docker exec devops az version | jq -r '."azure-cli"')
+          if [ "$LATEST_AZURE_VERSION" != "$INSTALLED_AZURE_VERSION" ]; then
+            echo "Azure CLI version mismatch: expected $LATEST_AZURE_VERSION, got $INSTALLED_AZURE_VERSION"
+            exit 1
+          fi
+
+          # AWS CLI
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+          LATEST_AWS_VERSION=$(aws --version 2>&1 | awk '{print $1}' | cut -d/ -f2)
+          INSTALLED_AWS_VERSION=$(docker exec devops aws --version 2>&1 | awk '{print $1}' | cut -d/ -f2)
+          echo "AWS CLI versions - Latest: $LATEST_AWS_VERSION, Installed: $INSTALLED_AWS_VERSION"
+
+          # Kubectl
+          LATEST_KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt | cut -c 2-)
+          INSTALLED_KUBECTL_VERSION=$(docker exec devops kubectl version --client -o json | jq -r '.clientVersion.gitVersion' | cut -c 2-)
+          if [ "$LATEST_KUBECTL_VERSION" != "$INSTALLED_KUBECTL_VERSION" ]; then
+            echo "Kubectl version mismatch: expected $LATEST_KUBECTL_VERSION, got $INSTALLED_KUBECTL_VERSION"
+            exit 1
+          fi
+
+          # Helm
+          LATEST_HELM_VERSION=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r .tag_name | cut -c 2-)
+          INSTALLED_HELM_VERSION=$(docker exec devops helm version --template="{{ .Version }}" | cut -c 2-)
+          if [ "$LATEST_HELM_VERSION" != "$INSTALLED_HELM_VERSION" ]; then
+            echo "Helm version mismatch: expected $LATEST_HELM_VERSION, got $INSTALLED_HELM_VERSION"
             exit 1
           fi
