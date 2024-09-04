@@ -2,9 +2,9 @@
 FROM phusion/baseimage:jammy-1.0.4
 
 #####################################
-ENV LANG C.UTF-8
-ENV LC_ALL en_US.UTF-8
-ENV DEBIAN_FRONTEND noninteractive
+ENV LANG=C.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
 
 ###
 ENV PHP_VERSION=8.3.10
@@ -136,13 +136,9 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION
     mv /usr/local/bin/aws /bin
     
 #gcloud
-RUN cd /tmp && \
-    wget https://storage.googleapis.com/cloud-sdk-release/google-cloud-cli-${GCLOUD_VERSION}-linux-arm.tar.gz && \
-    tar -xvzf google-cloud-cli-${GCLOUD_VERSION}-linux-arm.tar.gz && \
-    mv google-cloud-sdk /usr/local/gcloud && \
-    /usr/local/gcloud/install.sh --quiet && \
-    rm /tmp/google-cloud-cli-${GCLOUD_VERSION}-linux-arm.tar.gz
-ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \ 
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && \ 
+    apt-get update -y && apt-get install google-cloud-cli=${GCLOUD_VERSION}-0 -y
 
 #k9s
 RUN curl -LO https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz && \
