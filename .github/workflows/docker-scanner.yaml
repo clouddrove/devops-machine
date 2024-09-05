@@ -7,12 +7,17 @@ permissions:
   statuses: write
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   docker-scanner:
-    uses: clouddrove/github-shared-workflows/.github/workflows/docker-scanner.yml@1.2.7
+    uses: clouddrove/github-shared-workflows/.github/workflows/docker-scanner.yml@1.2.8
     with:
       severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
-      dockerfile-path: "./docker/Dockerfile"
+      dockerfile-path: "./.docker/Dockerfile"
       security-upload: "true"
+      block_action: "true"
