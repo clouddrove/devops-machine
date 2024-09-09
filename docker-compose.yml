@@ -20,9 +20,15 @@ services:
       - ~/.zsh_history:/home/ubuntu/.zsh_history
       - ~/.gitconfig:/home/ubuntu/.gitconfig
       - ~/.kube:/home/ubuntu/.kube
+      - ~/.azure:/home/ubuntu/.azure 
+      - ~/.config/gcloud:/home/ubuntu/.config/gcloud  
     networks:
       dev_net_devops:
         ipv4_address: 10.13.0.13
+    command: >
+      sh -c "chown -R ubuntu:ubuntu /home/ubuntu/ &&
+             service ssh start &&
+             su ubuntu -c 'tail -f /dev/null'"
 
 networks:
   dev_net_devops:
