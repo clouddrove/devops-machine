@@ -7,7 +7,6 @@ ENV LC_ALL=en_US.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
 ###
-ENV PHP_VERSION=8.3.10
 ENV PACKER_VERSION=1.11.2
 ENV TERRAFORM_VERSION=1.9.5
 ENV ANSIBLE_VERSION=10.3.0
@@ -15,7 +14,7 @@ ENV LINT_VERSION=4.1.0
 ENV KUBECTL_VERSION=1.31.0
 ENV HELM_VERSION=3.15.4
 ENV AZURE_CLI_VERSION=2.64.0-1~jammy
-ENV AWS_CLI_VERSION=2.17.43
+ENV AWS_CLI_VERSION=2.17.47
 ENV K9s_Version=0.32.5
 ENV GCLOUD_VERSION=490.0.0
 ENV KUI_Version=13.1.4
@@ -35,6 +34,10 @@ RUN chsh -s `which bash` ubuntu
 RUN usermod -d /home/ubuntu ubuntu
 RUN mkdir -p /home/ubuntu
 RUN mkdir -p /home/ubuntu/.ssh
+RUN mkdir -p /home/ubuntu/.aws && \
+    touch /home/ubuntu/.aws/credentials
+RUN mkdir -p /home/ubuntu/.azure && \
+    mkdir -p /home/ubuntu/.config/gcloud/
 RUN chmod 755 /home/ubuntu/.ssh
 RUN chown -R ubuntu:ubuntu /home/ubuntu
 RUN chmod 755 /home/ubuntu
@@ -50,26 +53,26 @@ RUN add-apt-repository ppa:longsleep/golang-backports
 RUN apt remove -y python3
 RUN apt update && apt upgrade -y
 RUN apt install -y      \
-	curl                   \
-	git                    \
-	zip                    \
-	unzip                  \
-	vim                    \
-	ruby-full              \
-	openssh-server         \
-	zsh                    \
-	figlet                 \
-	sysvbanner             \
-	htop                   \
-	python3-pip            \
-	wget                   \
-	ca-certificates        \
-	openssl                \
-	yamllint               \
-	inetutils-ping         \
-	telnet                 \
-	golang-go              \
-	libssl-dev             \
+    curl                   \
+    git                    \
+    zip                    \
+    unzip                  \
+    vim                    \
+    ruby-full              \
+    openssh-server         \
+    zsh                    \
+    figlet                 \
+    sysvbanner             \
+    htop                   \
+    python3-pip            \
+    wget                   \
+    ca-certificates        \
+    openssl                \
+    yamllint               \
+    inetutils-ping         \
+    telnet                 \
+    golang-go              \
+    libssl-dev             \
     apt-transport-https    \
     ca-certificates        \
     gnupg
@@ -93,7 +96,7 @@ RUN pip install ansible==${ANSIBLE_VERSION} \
                  pip \
                  yamllint
 
-#terraform	
+#terraform  
 RUN cd /tmp && \
      wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
      unzip -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/bin && \
