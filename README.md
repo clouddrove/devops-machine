@@ -45,7 +45,7 @@ This repository offers a comprehensive Docker-based environment configured with 
   - **Helm**: v3.15.1
   - **Packer**: v1.11.2
   - **Kubectl**: v1.31.0
-  - **AWS CLI**: v2.17.33
+  - **AWS CLI**: v2.17.47
   - **Azure CLI**: v2.63.0
   - **GCloud CLI**: v490.0.0
   - **K9s**: v0.32.5
