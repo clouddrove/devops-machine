@@ -1,7 +1,7 @@
 name: Enigma Docker Build and Publish.
 on:
   push:
-    tags: [ v* ]
+    # tags: [ v* ]
 
 jobs:
   docker-build-publish:
