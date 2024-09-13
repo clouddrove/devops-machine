@@ -31,6 +31,8 @@ jobs:
           BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_ARM64 }}
           DOCKERFILE_PATH: .docker/Dockerfile
           PUBLISH: ${{ env.PUBLISH }}
+          TOKEN: ${{ secrets.GITHUB }}
+          GITHUB_USERNAME: ${{github.actor}}
 
       - name: Build and Publish Docker Image
         uses: clouddrove/enigma@v0.0.10
@@ -41,3 +43,5 @@ jobs:
           BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_AMD64 }}
           DOCKERFILE_PATH: .docker/Dockerfile
           PUBLISH: ${{ env.PUBLISH }}
+          TOKEN: ${{ secrets.GITHUB }}
+          GITHUB_USERNAME: ${{github.actor}}
