@@ -5,7 +5,7 @@ on:
 
 jobs:
   docker-build-publish:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -14,7 +14,7 @@ jobs:
       DOCKER_TAG_ARM64: ghcr.io/${{ github.repository }}:${{ github.ref_name }}-arm64
       DOCKER_TAG_AMD64: ghcr.io/${{ github.repository }}:${{ github.ref_name }}-amd64
       PROVIDER: github
-      BUILD_ARCHITECTURE_ARM64: linux/arm64
+      BUILD_ARCHITECTURE_ARM64: arm64
       BUILD_ARCHITECTURE_AMD64: linux/amd64
       PUBLISH: 'true'
       
@@ -22,25 +22,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4.1.7
 
-      - name: Build and Publish Docker Image
-        uses: clouddrove/enigma@v0.0.10
-        with:
-          command: build-publish
-          DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-          DOCKER_TAG: ${{ env.DOCKER_TAG_AMD64 }}
-          BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_ARM64 }}
-          DOCKERFILE_PATH: .docker/Dockerfile
-          PUBLISH: ${{ env.PUBLISH }}
-          TOKEN: ${{ secrets.GITHUB }}
-          GITHUB_USERNAME: ${{github.actor}}
+      # - name: Build and Publish Docker Image
+      #   uses: clouddrove/enigma@v0.0.10
+      #   with:
+      #     command: build-publish
+      #     DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+      #     DOCKER_TAG: ${{ env.DOCKER_TAG_AMD64 }}
+      #     BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_ARM64 }}
+      #     DOCKERFILE_PATH: .docker/Dockerfile
+      #     PUBLISH: ${{ env.PUBLISH }}
+      #     TOKEN: ${{ secrets.GITHUB }}
+      #     GITHUB_USERNAME: ${{github.actor}}
 
       - name: Build and Publish Docker Image
         uses: clouddrove/enigma@v0.0.10
         with:
           command: build-publish
           DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-          DOCKER_TAG: ${{ env.DOCKER_TAG_AMD64 }}
-          BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_AMD64 }}
+          DOCKER_TAG: ${{ env.DOCKER_TAG_ARM64 }}
+          BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_ARM64 }}
           DOCKERFILE_PATH: .docker/Dockerfile
           PUBLISH: ${{ env.PUBLISH }}
           TOKEN: ${{ secrets.GITHUB }}
