@@ -1,7 +1,7 @@
 name: Enigma Docker Build and Publish.
 on:
   push:
-    # tags: [ v* ]
+    tags: [ v* ]
 
 jobs:
   docker-build-publish:
@@ -11,36 +11,36 @@ jobs:
       id-token: 'write'
     env:
       DOCKER_IMAGE: devops-machine
-      #DOCKER_TAG_ARM64: ghcr.io/${{ github.repository }}:${{ github.ref_name }}-arm64
-      #DOCKER_TAG_AMD64: ghcr.io/${{ github.repository }}:${{ github.ref_name }}-amd64
+      DOCKER_TAG_ARM64: ghcr.io/${{ github.repository }}:${{ github.ref_name }}-arm64
+      DOCKER_TAG_AMD64: ghcr.io/${{ github.repository }}:${{ github.ref_name }}-amd64
       PROVIDER: github
-      #BUILD_ARCHITECTURE_ARM64: arm64
-      #BUILD_ARCHITECTURE_AMD64: linux/amd64
+      BUILD_ARCHITECTURE_ARM64: arm64
+      BUILD_ARCHITECTURE_AMD64: amd64
       PUBLISH: 'true'
       
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.7
 
-      # - name: Build and Publish Docker Image
-      #   uses: clouddrove/enigma@v0.0.11
-      #   with:
-      #     command: build-publish
-      #     DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-      #     DOCKER_TAG: ghcr.io/${{ github.repository }}:v2-arm64
-      #     BUILD_ARCHITECTURE: arm
-      #     DOCKERFILE_PATH: .docker/Dockerfile
-      #     PUBLISH: ${{ env.PUBLISH }}
-      #     TOKEN: ${{ secrets.GITHUB }}
-      #     GITHUB_USERNAME: ${{github.actor}}
+      - name: Build and Publish Docker Image for ARM64
+        uses: clouddrove/enigma@v0.0.11
+        with:
+          command: build-publish
+          DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          DOCKER_TAG: ghcr.io/${{ github.repository }}:v2-arm64
+          BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_ARM64 }}
+          DOCKERFILE_PATH: .docker/Dockerfile
+          PUBLISH: ${{ env.PUBLISH }}
+          TOKEN: ${{ secrets.GITHUB }}
+          GITHUB_USERNAME: ${{github.actor}}
   
-      - name: Build and Publish Docker Image
+      - name: Build and Publish Docker Image for AMD64
         uses: clouddrove/enigma@v0.0.11
         with:
             command: build-publish
             DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
             DOCKER_TAG: ghcr.io/${{ github.repository }}:v3-amd64
-            BUILD_ARCHITECTURE: amd64
+            BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_AMD64 }}
             DOCKERFILE_PATH: .docker/Dockerfile
             PUBLISH: ${{ env.PUBLISH }}
             TOKEN: ${{ secrets.GITHUB }}
