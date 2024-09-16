@@ -1,7 +1,7 @@
 services:
   devops:
     container_name: devops
-    image: clouddrove/devops-machine:v0.0.1
+    image: ghcr.io/clouddrove/devops-machine:v4-arm64
     mem_limit: 3g
     memswap_limit: 3g
     cpu_shares: 30
