@@ -5,7 +5,7 @@ on:
 
 jobs:
   docker-build-publish:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: 'read'
       id-token: 'write'
