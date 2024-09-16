@@ -45,7 +45,7 @@ jobs:
         with:
           command: build-publish
           DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-          DOCKER_TAG: ${{ env.DOCKER_TAG_ARM64 }}
+          DOCKER_TAG: ghcr.io/${{ github.repository }}:v1-arm64
           BUILD_ARCHITECTURE: ${{ env.BUILD_ARCHITECTURE_ARM64 }}
           DOCKERFILE_PATH: .docker/Dockerfile
           PUBLISH: ${{ env.PUBLISH }}
