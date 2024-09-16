@@ -16,7 +16,7 @@ jobs:
       PROVIDER: github
       BUILD_ARCHITECTURE_ARM64: arm64
       BUILD_ARCHITECTURE_AMD64: linux/amd64
-      PUBLISH: 'true'
+      PUBLISH: 'false'
       
     steps:
       - name: Checkout code
@@ -33,6 +33,9 @@ jobs:
       #     PUBLISH: ${{ env.PUBLISH }}
       #     TOKEN: ${{ secrets.GITHUB }}
       #     GITHUB_USERNAME: ${{github.actor}}
+
+      - name: setup qemu
+        run: sudo apt install qemu qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
       - name: Build and Publish Docker Image
         uses: clouddrove/enigma@v0.0.10
