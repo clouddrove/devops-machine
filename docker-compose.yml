@@ -1,7 +1,8 @@
 services:
   devops:
     container_name: devops
-    image: clouddrove/devops-machine:v0.0.1
+    image: ghcr.io/clouddrove/devops-machine
+    platform: ${PLATFORM}
     mem_limit: 3g
     memswap_limit: 3g
     cpu_shares: 30
@@ -25,11 +26,6 @@ services:
     networks:
       dev_net_devops:
         ipv4_address: 10.13.0.13
-    command: >
-      sh -c "chown -R ubuntu:ubuntu /home/ubuntu/ &&
-             service ssh start &&
-             su ubuntu -c 'tail -f /dev/null'"
-
 networks:
   dev_net_devops:
     driver: bridge
