@@ -56,11 +56,31 @@ PWD := $(shell pwd)
 
 ## Docker compose down
 down:
-	@docker-compose  down
+	@ARCH=$$(uname -m); \
+	if [ "$$ARCH" = "x86_64" ]; then \
+		PLATFORM="linux/amd64"; \
+	elif [ "$$ARCH" = "arm64" ] || [ "$$ARCH" = "aarch64" ]; then \
+		PLATFORM="linux/arm64"; \
+	else \
+		echo "${RED}Unsupported architecture: $$ARCH${RESET}"; \
+		exit 1; \
+	fi; \
+	PLATFORM=$$PLATFORM \
+	docker-compose down
 
 ## Docker compose up
 up:
-	@docker-compose  up -d
+	@ARCH=$$(uname -m); \
+	if [ "$$ARCH" = "x86_64" ]; then \
+		PLATFORM="linux/amd64"; \
+	elif [ "$$ARCH" = "arm64" ] || [ "$$ARCH" = "aarch64" ]; then \
+		PLATFORM="linux/arm64"; \
+	else \
+		echo "${RED}Unsupported architecture: $$ARCH${RESET}"; \
+		exit 1; \
+	fi; \
+	PLATFORM=$$PLATFORM \
+	docker-compose up -d 
 
 ## Docker ssh kill
 ssh:
