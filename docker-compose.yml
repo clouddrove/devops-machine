@@ -25,10 +25,6 @@ services:
     networks:
       dev_net_devops:
         ipv4_address: 10.13.0.13
-    command: >
-      sh -c "chown -R ubuntu:ubuntu /home/ubuntu/ &&
-             service ssh start &&
-             su ubuntu -c 'tail -f /dev/null'"
 
 networks:
   dev_net_devops:
