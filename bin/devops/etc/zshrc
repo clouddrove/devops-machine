@@ -86,3 +86,7 @@ export PATH="/bin:/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sb
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 export LANG=C.UTF-8
+setopt append_history
+setopt no_hist_save_by_copy
+setopt hist_ignore_all_dups
+

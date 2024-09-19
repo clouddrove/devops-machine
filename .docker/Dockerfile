@@ -81,6 +81,8 @@ RUN apt install -y      \
 # ZSH
 ADD .docker/etc/install-zsh.sh /root/install-zsh.sh
 ADD .docker/etc/install-zsh.sh /home/ubuntu/install-zsh.sh
+RUN rm -rf /home/ubuntu/.zsh_history && touch /home/ubuntu/.zsh_history
+
 
 RUN chmod +x /root/install-zsh.sh
 RUN chmod +x /home/ubuntu/install-zsh.sh
