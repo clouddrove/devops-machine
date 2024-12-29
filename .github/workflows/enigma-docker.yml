@@ -20,7 +20,7 @@ jobs:
       
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
 
       - name: Build and Publish Docker Image for ARM64
         uses: clouddrove/enigma@v0.0.11
