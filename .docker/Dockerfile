@@ -1,5 +1,5 @@
 # Pull base image.
-FROM phusion/baseimage:jammy-1.0.4
+FROM phusion/baseimage:jammy-1.0.5
 
 #####################################
 ENV LANG=C.UTF-8
