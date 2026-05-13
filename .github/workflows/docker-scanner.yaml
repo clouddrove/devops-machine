@@ -15,7 +15,7 @@ on:
 
 jobs:
   docker-scanner:
-    uses: clouddrove/github-shared-workflows/.github/workflows/docker-scanner.yml@1.2.8
+    uses: clouddrove/github-shared-workflows/.github/workflows/docker-scanner.yml@v2.1.4
     with:
       severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
       dockerfile-path: "./.docker/Dockerfile"
